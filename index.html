@@ -9,41 +9,35 @@
 </head>
 
 <body>
-	<script src="script.js"></script>
+
 	<div class="units">
 		<!-- пример вывода персонажа -->
-		<div class="unit" id='unitClass__or__unitName'>
-			<h1 class="unit_name">Имя персонажа</h1>
-			<h3 class="unit_weapon">оружие:<span>оружие персонажа</span></h3>
-			<h3 class="unit_def">защита:<span>защита персонажа</span></h3>
-			<h3 class="unit_hp">хитпоинты:<span>здоровье персонажа</span></h3>
-			<h3 class="unit_dmg">урон:<span>урон персонажа</span></h3>
-			<h3 class="unit_crit_dmg">урон в голову:<span>урон персонажа</span></h3>
-			<h3 class="unit_speed">скорость:<span>скорость персонажа</span></h3>
-		</div>
+		<div class="unit" id='Knight'>
+			<h1 class="unit_name">Артур</h1>
+			<h4 class="unit_weapon">weapon:<span>Меч и щит</span></h4>
+			<h4 class="unit_def">protaction:<span>10</span></h4>
+      <!-- <h4 class="unit_defi">shield protaction:<span>99</span></h4> не готово--> 
+			<h4 class="unit_hp">hit points:<span>50</span></h4>
+			<h4 class="unit_dmg">damage:<span>15</span></h4>
+			<!-- <h4 class="unit_crit_dmg">critical damage:<span>45</span></h4> не готово-->
+			<h4 class="unit_speed">speed:<span>5</span></h4>
+    </div>
+    <div class="unit" id='Archer'>
+      <h1 class="unit_name">Финн</h1>
+      <h4 class="unit_weapon">weapon:<span>Лук и стрелы</span></h4>
+      <h4 class="unit_def">protaction:<span>5</span></h4>
+      <h4 class="unit_hp">hit points:<span>40</span></h4>
+      <h4 class="unit_dmg">damage:<span>25</span></h4>
+      <!-- <h4 class="unit_crit_dmg">critical damage:<span>100</span></h4>  не готово -->
+      <h4 class="unit_speed">speed:<span>15</span></h4>
+    </div>
+  </div>
 
-		<div class="hero">
-			<div>
-				<h1>Рыцарь</h1>
-				<h3>оружие:Меч и щит</h3>
-				<h3>защита щита:99</h3>
-				<h3>защита:10</h3>
-				<h3>хитпоинты:50</h3>
-				<h3>урон:15</h3>
-				<h3>крит урон:45</h3>
-				<h3>скорость:5</h3>
-			</div>
-			<div class="luchnik">
-				<h1>Лучник</h1>
-				<h3>оружие:Лук и стрелы</h3>
-				<h3>защита:5</h3>
-				<h3>хитпоинты:40</h3>
-				<h3>урон:25</h3>
-				<h3>урон в голову: 100</h3>
-				<h3>скорость:15</h3>
-			</div>
-		</div>
-	</div>
+
+	
+<script src="script.js"></script>
+  <script src="render.js"></script>
+	
 </body>
 
 </html>

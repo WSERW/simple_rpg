@@ -58,7 +58,7 @@ class Knight extends Unit{
 	def = 30;
 	atk = 15;
 	spec = 'Рыцарь';
-	availableWeapons = ['sword','pike','axe'];
+	availableWeapons = ['sword','pike','axe','Excalibur and Shield'];
 	set weapon(value){
 		if (!this.availableWeapons.includes(value.name)) {
 			console.log(`${this.name} не может использовать ${value.name}`);
@@ -80,7 +80,7 @@ class Archer extends Unit{
 	def = 10;
 	atk = 25;
 	spec = 'Лучник';
-	availableWeapons = ['bow'];
+	availableWeapons = ['bow and arrows'];
 	set weapon(value){
 		if (!this.availableWeapons.includes(value.name)) {
 			console.log(`${this.name} не может использовать ${value.name}`);
@@ -102,6 +102,8 @@ unit1.weapon = {name:'axe',dmg:10}
 
 let unit2 = new Archer('jack');
 unit2.weapon = {name:'bow',dmg:7}
+
+
 
 
 
