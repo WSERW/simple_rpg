@@ -1,65 +1,3 @@
-// let hero = {
-// 	name: 'Jhon',
-// 	hp: 100,
-// 	def:10,
-// 	weapon: 'sword',
-// 	lvlUp: function(){
-// 		this.hp+=10;
-// 	}
-// }
-
-// hero.lvlUp();
-
-// console.log(hero)
-
-
-
-// function createHero(name,weapon) {
-// 	return{
-// 		name: name,
-// 		hp: 100,
-// 		def:10,
-// 		weapon: weapon,
-// 		lvlUp: function(){
-// 			this.hp+=10;
-// 		}
-// 	}
-// }
-
-
-
-// let hero2 = createHero('bob','pike')
-// hero2.lvlUp();
-
-// console.log(hero2)
-
-
-
-// class Hero {
-// 	constructor(name,weapon){
-// 		this.name = name;
-// 		this.weapon = weapon;
-// 		this.hp = 100;
-// 		this.def= 10;
-// 	}
-
-// 	lvlUp(){
-// 		this.hp+=10;
-// 	}
-
-
-// }
-
-
-// let hero3 = new Hero('Alan','gun');
-
-// hero3.lvlUp();
-
-// console.log(hero3)
-
-
-
-
 class Unit {
 	lvl = 1;
 	maxHp = 30;
@@ -72,55 +10,46 @@ class Unit {
 
 
 
-	constructor(name){
+	constructor(name) {
 		this.name = name;
 	}
 
 
 
-	lvlUp(){
-		this.lvl+=1;
-		this.maxHp+=10;
+	lvlUp() {
+		this.lvl += 1;
+		this.maxHp += 10;
 		this._hp = this.maxHp;
-		this.def+=5;
-		this.atk+=5;
-		this.speed+=1;
+		this.def += 5;
+		this.atk += 5;
+		this.speed += 1;
 	}
 
-	hitEnemy(enemy){
+	hitEnemy(enemy) {
 
-		if(!this._weapon){
+		if (!this._weapon) {
 			console.log(`${this.name} безоружен`);
 			return;
 		}
-		if(rand(1,11)<=this._weapon.say){
-			let dmg = (this.atk - this.def)/10*this._weapon.dmg + this._weapon.dmg;
-		this._hp -= dmg/2;
-		console.log(`${this.name} нанёс себе ${dmg} урона.`);
+		if (rand(1, 11) <= this._weapon.say) {
+			let dmg = (this.atk - this.def) / 10 * this._weapon.dmg + this._weapon.dmg;
+			this._hp -= dmg / 2;
+			console.log(`${this.name} нанёс себе ${dmg} урона.`);
 		}
-		if(rand(1,11)<=this.aim-enemy.speed){
-		let dmg = (this.atk - enemy.def)/10*this._weapon.dmg + this._weapon.dmg;
-		if(dmg<=0){
-			console.log(`${enemy.name} заблокировал атаку`);
-		}else{
-			enemy.hp -= dmg;
-		console.log(`${enemy.name} получил ${dmg} урона.`);
-		}
-		
-		}else{
+		if (rand(1, 11) <= this.aim - enemy.speed) {
+			let dmg = (this.atk - enemy.def) / 10 * this._weapon.dmg + this._weapon.dmg;
+			if (dmg <= 0) {
+				console.log(`${enemy.name} заблокировал атаку`);
+			} else {
+				enemy.hp -= dmg;
+				console.log(`${enemy.name} получил ${dmg} урона.`);
+			}
+
+		} else {
 			console.log(`${this.name} промахнулся `);
 		}
 	}
-
-
-	// set hp(hp){
-	// 	console.log(hp);
-	// 	if (value <= 0) {
-	// 		console.log('Вы погибли в битве...')
-	// 	}
-	// 	return;
-	// }
-	set hp(value){
+	set hp(value) {
 		if (value <= 0) {
 			console.log(this.name + ' погиб в битве');
 			this._hp = 0;
@@ -128,32 +57,28 @@ class Unit {
 		this._hp = value
 	}
 
-	set weapon(weapon){
+	set weapon(weapon) {
 		console.log(`${this.name} вооружился ${weapon.name}, урон: ${weapon.dmg}`);
 		this._weapon = weapon;
 	}
 
-	get weapon(){
-		if(!this._weapon){
+	get weapon() {
+		if (!this._weapon) {
 			console.log(`${this.name} безоружен`);
 			return
 		};
 		return `${this.name} вооружен ${this._weapon.name}, урон: ${this._weapon.dmg}`;
 	}
-	get hp(){
+	get hp() {
 		return this._hp;
 	}
-	get status(){
+	get status() {
 		return `У вас ${this._hp} здоровья`;
 	}
-
-	// get hp(){
-	// 	return `У вас ${this._hp} здоровья`;
-	// }
 }
 
 
-class Knight extends Unit{
+class Knight extends Unit {
 	maxHp = 50;
 	_hp = this.maxHp;
 	def = 10;
@@ -161,37 +86,36 @@ class Knight extends Unit{
 	speed = 1;
 	aim = 3;
 	spec = 'Рыцарь';
-	availableWeapons = ['sword','pike','axe'];
-	shield(){
+	availableWeapons = ['sword', 'pike', 'axe'];
+	shield() {
 		console.log(`${this.name} готовится обороняться`);
-		this.def+=1;
-		this.atk-=1;
+		this.def += 1;
+		this.atk -= 1;
 	}
-	attack(){
+	attack() {
 		console.log(`${this.name} готовится к атаке`);
-		this.def-=1;
-		this.atk+=1;
-		this.aim+=1;
+		this.def -= 1;
+		this.atk += 1;
+		this.aim += 1;
 	}
-	healthing(){
+	healthing() {
 		console.log(`${this.name} заживляет раны`);
-		this._hp+=3;
+		this._hp += 3;
 	}
-	set weapon(value){
+	set weapon(value) {
 
 		console.log(`${this.spec} ${this.name} вооружился ${value.name}, урон: ${value.dmg}`);
 		if (!this.availableWeapons.includes(value.name)) {
 			this.atk = 0;
 			console.log(`${this.name} не может использовать ${value.name}`);
-		}
-		else{
+		} else {
 			this.atk = 15;
 		}
 		this._weapon = value;
 	}
 }
 
-class Archer extends Unit{
+class Archer extends Unit {
 	maxHp = 30;
 	_hp = this.maxHp;
 	def = 5;
@@ -200,29 +124,28 @@ class Archer extends Unit{
 	aim = 1;
 	spec = 'Лучник';
 	availableWeapons = ['bow'];
-	speeding(){
+	speeding() {
 		console.log(`${this.name} готовится к укланению`);
-			this.speed+=1;
-			this.atk-=5;
-		}
-		aiming(){
-			console.log(`${this.name} концентрируется`)
-			this.aim+=1;
-			this.atk+=3;
-		}
-		healthing(){
-			console.log(`${this.name} заживляет раны`);
-			this._hp+=3;
-		}
-	set weapon(value){
-		
+		this.speed += 1;
+		this.atk -= 5;
+	}
+	aiming() {
+		console.log(`${this.name} концентрируется`)
+		this.aim += 1;
+		this.atk += 3;
+	}
+	healthing() {
+		console.log(`${this.name} заживляет раны`);
+		this._hp += 3;
+	}
+	set weapon(value) {
+
 
 		console.log(`${this.spec} ${this.name} вооружился ${value.name}, урон: ${value.dmg}`);
 		if (!this.availableWeapons.includes(value.name)) {
 			this.atk = 0;
 			console.log(`${this.name} не может использовать ${value.name}`);
-		}
-		else{
+		} else {
 			this.atk = 15;
 		}
 		this._weapon = value;
@@ -236,7 +159,15 @@ function rand(min, max) {
 }
 
 let bob = new Knight('bob');
-bob.weapon = {name:'axe',dmg:8, say:3}
+bob.weapon = {
+	name: 'axe',
+	dmg: 8,
+	say: 3
+}
 let jack = new Archer('jack');
-jack.weapon = {name:'bow',dmg:5, say:0}
+jack.weapon = {
+	name: 'bow',
+	dmg: 5,
+	say: 0
+}
 jack.speed = 2;
