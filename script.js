@@ -1,3 +1,35 @@
+allitems = [
+	{
+		type: "def",
+	name: "barrier",
+	active: function(n,e){
+		e.def+=3;
+		}
+	},
+	{
+		type: "def",
+	name: "wall",
+	active: function(n,e){
+		e.def+=10;
+		e.atk-=3;
+		}
+	},
+	{
+		type: "atk",
+	name: "vampire",
+	active: function(n,e){
+		e.hp-=3;
+		n.hp+=3;
+		}
+	},
+	{
+		type: "help",
+	name: "heal",
+	active: function(n,e){
+		e.hp+=10;
+		}
+	},
+];
 class Unit {
 	lvl = 1;
 	maxHp = 30;
@@ -7,6 +39,8 @@ class Unit {
 	speed = 1;
 	aim = 1;
 	spec = 'без професси';
+	maxitems = 3;
+	items = [];
 
 
 
@@ -14,7 +48,41 @@ class Unit {
 		this.name = name;
 	}
 
-
+	use(n,e){
+		if(this.items.length>0){
+			let done = false;
+		for(let i = 0; i<this.items.length; i++){
+			if(this.items[i].name == n){
+				done = true;
+				this.items[i].active(this.name,e);
+				this.items.splice(i,1);
+				console.log(this.name + ' использовал ' + n + ' на ' + e.name);
+			}
+		}
+		if(!done){
+			console.log('У '+ this.name + ' нет такого предмета');
+		}
+		}else{
+		console.log(this.name + ' не имеет никаких предметов');
+	}
+	}
+	additem(n){
+		
+			if(this.maxitems>=this.items.length){
+			for(let i = 0; i<allitems.length;i++){
+				if(allitems[i].name == n){
+					this.items.push(allitems[i]);
+					console.log(this.name + ' получил ' + n);
+				}else{
+					console.log('Предмета ' + n + 'не существует');
+				}
+			}
+		}else{
+			console.log('У '+ this.name + ' нет места для предметов');
+		}
+		
+	
+	}
 
 	lvlUp() {
 		this.lvl += 1;
@@ -86,6 +154,7 @@ class Knight extends Unit {
 	speed = 1;
 	aim = 9;
 	spec = 'Рыцарь';
+	maxitems = 3;
 	availableWeapons = ['sword', 'pike', 'axe'];
 	shield() {
 		console.log(`${this.name} готовится обороняться`);
@@ -113,6 +182,13 @@ class Knight extends Unit {
 		}
 		this._weapon = value;
 	}
+	get weapon() {
+		if (!this._weapon) {
+			console.log(`${this.name} безоружен`);
+			return
+		};
+		return `${this.name} вооружен ${this._weapon.name}, урон: ${this._weapon.dmg}`;
+	}
 }
 
 class Archer extends Unit {
@@ -122,6 +198,7 @@ class Archer extends Unit {
 	atk = 25;
 	speed = 3;
 	aim = 1;
+	maxitems = 3;
 	spec = 'Лучник';
 	availableWeapons = ['bow','knife'];
 	speeding() {
@@ -150,6 +227,13 @@ class Archer extends Unit {
 		}
 		this._weapon = value;
 	}
+	get weapon() {
+		if (!this._weapon) {
+			console.log(`${this.name} безоружен`);
+			return
+		};
+		return `${this.name} вооружен ${this._weapon.name}, урон: ${this._weapon.dmg}`;
+	}
 }
 
 class Wizard extends Unit {
@@ -160,6 +244,7 @@ class Wizard extends Unit {
 	speed = 1;
 	aim = 8;
 	man = 0;
+	maxitems = 3;
 	spec = 'Маг';
 	availableWeapons = ['book','fireball','stick'];
 	maning(){
@@ -235,6 +320,13 @@ class Wizard extends Unit {
 			this.atk = 15;
 		}
 		this._weapon = value;
+	}
+	get weapon() {
+		if (!this._weapon) {
+			console.log(`${this.name} безоружен`);
+			return
+		};
+		return `${this.name} вооружен ${this._weapon.name}, урон: ${this._weapon.dmg}`;
 	}
 }
 
