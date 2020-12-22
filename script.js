@@ -84,7 +84,7 @@ class Knight extends Unit {
 	def = 10;
 	atk = 15;
 	speed = 1;
-	aim = 3;
+	aim = 9;
 	spec = 'Рыцарь';
 	availableWeapons = ['sword', 'pike', 'axe'];
 	shield() {
@@ -123,7 +123,7 @@ class Archer extends Unit {
 	speed = 3;
 	aim = 1;
 	spec = 'Лучник';
-	availableWeapons = ['bow'];
+	availableWeapons = ['bow','knife'];
 	speeding() {
 		console.log(`${this.name} готовится к укланению`);
 		this.speed += 1;
@@ -137,6 +137,92 @@ class Archer extends Unit {
 	healthing() {
 		console.log(`${this.name} заживляет раны`);
 		this._hp += 3;
+	}
+	set weapon(value) {
+
+
+		console.log(`${this.spec} ${this.name} вооружился ${value.name}, урон: ${value.dmg}`);
+		if (!this.availableWeapons.includes(value.name)) {
+			this.atk = 0;
+			console.log(`${this.name} не может использовать ${value.name}`);
+		} else {
+			this.atk = 15;
+		}
+		this._weapon = value;
+	}
+}
+
+class Wizard extends Unit {
+	maxHp = 25;
+	_hp = this.maxHp;
+	def = 10;
+	atk = 15;
+	speed = 1;
+	aim = 8;
+	man = 0;
+	spec = 'Маг';
+	availableWeapons = ['book','fireball','stick'];
+	maning(){
+		this.man++;
+		console.log(`${this.name} накапливает силу`);
+	}
+	freezing(enem) {
+		if(this.man>=3){
+			console.log(`${this.name} замедляет и десконцинтрирует ${enem.name}`);
+		enem.speed -= 1;
+		enem.aim -= 3;
+		this.man-=3;
+		}else{
+			console.log(`${this.name} недостаточно силён для этого заклинания`);
+		}
+		
+	}
+	aiming() {
+		console.log(`${this.name} концентрируется`)
+		this.aim += 1;
+		this.atk += 3;
+	}
+	healthing(hit) {
+		if(this.man>=1){
+		console.log(`${this.name} усердно заживляет раны ${hit.name}`);
+		hit._hp += 5;
+		this.man-=1;
+	}else{
+		console.log(`${this.name} недостаточно силён для этого заклинания`);
+	}
+	}
+	finaldef(){
+		if(this.man>=5){
+		console.log(`${this.name} отчаянно защищается`);
+		this.def +=15;
+		this.atk -=5;
+		this.man-=5;
+	}else{
+		console.log(`${this.name} недостаточно силён для этого заклинания`);
+	}
+
+	}
+	finalatk(){
+		if(this.man>=5){
+		console.log(`${this.name} отчаянно атакует`);
+		this.def -= 5;
+		this.atk +=15;
+		this.man-=5;
+	}else{
+		console.log(`${this.name} недостаточно силён для этого заклинания`);
+	}
+	}
+	diedatk(enemy){
+		if(this.man>=10){
+		console.log(`${this.name} налаживает мощную порчу на ${enemy.name}`);
+		enemy.def -= 15;
+		enemy.atk -=15;
+		enemy.speed -=3;
+		this.man-=10;
+	}else{
+		console.log(`${this.name} недостаточно силён для этого заклинания`);
+	}
+
 	}
 	set weapon(value) {
 
@@ -171,3 +257,9 @@ jack.weapon = {
 	say: 0
 }
 jack.speed = 2;
+let Gandalf = new Wizard('Gandalf');
+Gandalf.weapon = {
+	name: 'stick',
+	dmg: 10,
+	say: 1
+}
