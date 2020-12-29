@@ -1,43 +1,78 @@
+// список возможных предметов
 allitems = [
 	{
 		type: "def",
 	name: "barrier",
-	active: function(n,e){
-		e.def+=3;
+	pasive: function(name,bool){
+		if(!bool){
+			name._def+=1;
+		}else{
+			name._def-=1;
+		}
+		
+		},
+	active: function(name,enemy){
+		enemy._def+=3;
 		}
 	},
 	{
 		type: "def",
 	name: "wall",
-	active: function(n,e){
-		e.def+=10;
-		e.atk-=3;
+	pasive: function(name,bool){
+		if(!bool){
+			name._def+=1;
+		}else{
+			name._def-=1;
+		}
+		
+		},
+		active: function(name,enemy){
+		enemy._def+=10;
+		enemy._atk-=3;
 		}
 	},
 	{
 		type: "atk",
 	name: "vampire",
-	active: function(n,e){
-		e.hp-=3;
-		n.hp+=3;
+	pasive: function(name,bool){
+		if(!bool){
+			name._atk+=1;
+		}else{
+			name._atk-=1;
+		}
+		
+		},
+		active: function(name,enemy){
+		enemy._hp-=3;
+		name._hp+=3;
 		}
 	},
 	{
 		type: "help",
 	name: "heal",
-	active: function(n,e){
-		e.hp+=10;
+	pasive: function(name,bool){
+		
+		
+		},
+		active: function(name,enemy){
+		enemy._hp+=10;
 		}
 	},
 ];
+// главный класс
 class Unit {
 	lvl = 1;
 	maxHp = 30;
+	_maxHp = this.maxHp;
 	_hp = this.maxHp;
 	def = 10;
+	_def = this.def;
 	atk = 10;
+	_atk = this.atk;
 	speed = 1;
+	_speed = this.atk;
 	aim = 1;
+	_aim = this.aim;
 	spec = 'без професси';
 	maxitems = 3;
 	items = [];
@@ -47,16 +82,17 @@ class Unit {
 	constructor(name) {
 		this.name = name;
 	}
-
-	use(n,e){
+// использование предмета
+	use(item,enemy){
 		if(this.items.length>0){
 			let done = false;
 		for(let i = 0; i<this.items.length; i++){
-			if(this.items[i].name == n){
+			if(this.items[i].name == item){
 				done = true;
-				this.items[i].active(this.name,e);
+				this.items[i].active(this.name,enemy);
+				this.items[i].pasive(this,true);
 				this.items.splice(i,1);
-				console.log(this.name + ' использовал ' + n + ' на ' + e.name);
+				console.log(this.name + ' использовал ' + item + ' на ' + enemy.name);
 			}
 		}
 		if(!done){
@@ -66,15 +102,15 @@ class Unit {
 		console.log(this.name + ' не имеет никаких предметов');
 	}
 	}
+	// добавление предмета
 	additem(n){
 		
 			if(this.maxitems>=this.items.length){
 			for(let i = 0; i<allitems.length;i++){
 				if(allitems[i].name == n){
 					this.items.push(allitems[i]);
+					allitems[i].pasive(this,false);
 					console.log(this.name + ' получил ' + n);
-				}else{
-					console.log('Предмета ' + n + 'не существует');
 				}
 			}
 		}else{
@@ -92,7 +128,7 @@ class Unit {
 		this.atk += 5;
 		this.speed += 1;
 	}
-
+// удар
 	hitEnemy(enemy) {
 
 		if (!this._weapon) {
@@ -100,12 +136,12 @@ class Unit {
 			return;
 		}
 		if (rand(1, 11) <= this._weapon.say) {
-			let dmg = (this.atk - this.def) / 10 * this._weapon.dmg + this._weapon.dmg;
+			let dmg = (this._atk - this._def) / 10 * this._weapon.dmg + this._weapon.dmg;
 			this._hp -= dmg / 2;
 			console.log(`${this.name} нанёс себе ${dmg} урона.`);
 		}
 		if (rand(1, 11) <= this.aim - enemy.speed) {
-			let dmg = (this.atk - enemy.def) / 10 * this._weapon.dmg + this._weapon.dmg;
+			let dmg = (this._atk - enemy._def) / 10 * this._weapon.dmg + this._weapon.dmg;
 			if (dmg <= 0) {
 				console.log(`${enemy.name} заблокировал атаку`);
 			} else {
@@ -156,16 +192,17 @@ class Knight extends Unit {
 	spec = 'Рыцарь';
 	maxitems = 3;
 	availableWeapons = ['sword', 'pike', 'axe'];
+	// способности класса
 	shield() {
 		console.log(`${this.name} готовится обороняться`);
-		this.def += 1;
-		this.atk -= 1;
+		this._def += 1;
+		this._atk -= 1;
 	}
 	attack() {
 		console.log(`${this.name} готовится к атаке`);
-		this.def -= 1;
-		this.atk += 1;
-		this.aim += 1;
+		this._def -= 1;
+		this._atk += 1;
+		this._aim += 1;
 	}
 	healthing() {
 		console.log(`${this.name} заживляет раны`);
@@ -175,10 +212,10 @@ class Knight extends Unit {
 
 		console.log(`${this.spec} ${this.name} вооружился ${value.name}, урон: ${value.dmg}`);
 		if (!this.availableWeapons.includes(value.name)) {
-			this.atk = 0;
+			this._atk = 0;
 			console.log(`${this.name} не может использовать ${value.name}`);
 		} else {
-			this.atk = 15;
+			this._atk = 15;
 		}
 		this._weapon = value;
 	}
@@ -201,15 +238,16 @@ class Archer extends Unit {
 	maxitems = 3;
 	spec = 'Лучник';
 	availableWeapons = ['bow','knife'];
+	// способности класса
 	speeding() {
 		console.log(`${this.name} готовится к укланению`);
-		this.speed += 1;
-		this.atk -= 5;
+		this._speed += 1;
+		this._atk -= 5;
 	}
 	aiming() {
 		console.log(`${this.name} концентрируется`)
-		this.aim += 1;
-		this.atk += 3;
+		this._aim += 1;
+		this._atk += 3;
 	}
 	healthing() {
 		console.log(`${this.name} заживляет раны`);
@@ -220,10 +258,10 @@ class Archer extends Unit {
 
 		console.log(`${this.spec} ${this.name} вооружился ${value.name}, урон: ${value.dmg}`);
 		if (!this.availableWeapons.includes(value.name)) {
-			this.atk = 0;
+			this._atk = 0;
 			console.log(`${this.name} не может использовать ${value.name}`);
 		} else {
-			this.atk = 15;
+			this._atk = 15;
 		}
 		this._weapon = value;
 	}
@@ -247,6 +285,7 @@ class Wizard extends Unit {
 	maxitems = 3;
 	spec = 'Маг';
 	availableWeapons = ['book','fireball','stick'];
+	// способности класса
 	maning(){
 		this.man++;
 		console.log(`${this.name} накапливает силу`);
@@ -254,8 +293,8 @@ class Wizard extends Unit {
 	freezing(enem) {
 		if(this.man>=3){
 			console.log(`${this.name} замедляет и десконцинтрирует ${enem.name}`);
-		enem.speed -= 1;
-		enem.aim -= 3;
+		enem._speed -= 1;
+		enem._aim -= 3;
 		this.man-=3;
 		}else{
 			console.log(`${this.name} недостаточно силён для этого заклинания`);
@@ -264,8 +303,8 @@ class Wizard extends Unit {
 	}
 	aiming() {
 		console.log(`${this.name} концентрируется`)
-		this.aim += 1;
-		this.atk += 3;
+		this._aim += 1;
+		this._atk += 3;
 	}
 	healthing(hit) {
 		if(this.man>=1){
@@ -279,8 +318,8 @@ class Wizard extends Unit {
 	finaldef(){
 		if(this.man>=5){
 		console.log(`${this.name} отчаянно защищается`);
-		this.def +=15;
-		this.atk -=5;
+		this._def +=15;
+		this._atk -=5;
 		this.man-=5;
 	}else{
 		console.log(`${this.name} недостаточно силён для этого заклинания`);
@@ -290,8 +329,8 @@ class Wizard extends Unit {
 	finalatk(){
 		if(this.man>=5){
 		console.log(`${this.name} отчаянно атакует`);
-		this.def -= 5;
-		this.atk +=15;
+		this._def -= 5;
+		this._atk +=15;
 		this.man-=5;
 	}else{
 		console.log(`${this.name} недостаточно силён для этого заклинания`);
@@ -300,9 +339,9 @@ class Wizard extends Unit {
 	diedatk(enemy){
 		if(this.man>=10){
 		console.log(`${this.name} налаживает мощную порчу на ${enemy.name}`);
-		enemy.def -= 15;
-		enemy.atk -=15;
-		enemy.speed -=3;
+		enemy._def -= 15;
+		enemy._atk -=15;
+		enemy._speed -=3;
 		this.man-=10;
 	}else{
 		console.log(`${this.name} недостаточно силён для этого заклинания`);
@@ -314,10 +353,10 @@ class Wizard extends Unit {
 
 		console.log(`${this.spec} ${this.name} вооружился ${value.name}, урон: ${value.dmg}`);
 		if (!this.availableWeapons.includes(value.name)) {
-			this.atk = 0;
+			this._atk = 0;
 			console.log(`${this.name} не может использовать ${value.name}`);
 		} else {
-			this.atk = 15;
+			this._atk = 15;
 		}
 		this._weapon = value;
 	}
@@ -329,13 +368,13 @@ class Wizard extends Unit {
 		return `${this.name} вооружен ${this._weapon.name}, урон: ${this._weapon.dmg}`;
 	}
 }
-
+// рандомайзер
 function rand(min, max) {
 	min = Math.ceil(min);
 	max = Math.floor(max);
 	return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
 }
-
+// список игроков
 let bob = new Knight('bob');
 bob.weapon = {
 	name: 'axe',
