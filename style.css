@@ -4,14 +4,17 @@ html{
 body{
 	background-image: url(tt.jpg);
 	background-size: cover;
+	background-repeat: no-repeat;
 	color: black;
 
 }
-.hero{
-	display: flex;
 
+.units{
+	display: flex;
 }
-.luchnik{
-	
-	margin-left: 30px;
+.unit{
+	background-color: rgba(0,0,0,0.5);
+	padding: 20px;
+	margin:10px;
+	color: #fff;
 }

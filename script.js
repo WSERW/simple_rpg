@@ -261,8 +261,8 @@ jack.weapon = {
 	say: 0
 }
 jack.speed = 2;
-let Gandalf = new Wizard('Gandalf');
-Gandalf.weapon = {
+let gandalf = new Wizard('Gandalf');
+gandalf.weapon = {
 	name: 'stick',
 	dmg: 10,
 	say: 1
