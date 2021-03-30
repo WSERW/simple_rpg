@@ -1,47 +1,38 @@
-var socket = io();
-var artur;
-var finn;
+class UnitRender extends React.Component{
 
-socket.emit("new player",socket.id);
-socket.on("Player", function(data){
-	console.log(data);
-});
-if(artur!=null){
-	let arturTheKnight = document.querySelector("#Knight")
-arturTheKnight.querySelector('.unit_name').innerText = artur.name;
-arturTheKnight.querySelector('.unit_weapon>span').innerText = artur.weapon;
-arturTheKnight.querySelector('.unit_def>span').innerText = artur.def;
-//arturTheKnight.querySelector('.unit_defi>span').innerText = artur.defi не готово
-arturTheKnight.querySelector('.unit_hp>span').innerText = artur.hp;
-arturTheKnight.querySelector('.unit_dmg>span').innerText = artur.atk;
-//arturTheKnight.querySelector('.unit_crit_dmg').innerText = artur.crit_dmg не готово
-//arturTheKnight.querySelector('.unit_speed').innerText = artur.speed
+// функция компонента
+render (){
+    // генерируемый html
+    return(
+        <div className="unit">
+   
+            
+            <div className="stats">
+            <span className="unit_name">Имя: {this.props.unit.name}</span><br/>  {/* подставляем параметры из получаемого пропс */}
+            <span className="unit_weapon">Оружие: {this.props.unit._weapon.name}</span><br/> {/* подставляем параметры из получаемого пропс */}
+            <span className="unit_spec">Направление: {this.props.unit.spec}</span><br/> {/* подставляем параметры из получаемого пропс */}
+            <span className="unit_def">Защита: {this.props.unit.def}</span><br/> {/* подставляем параметры из получаемого пропс */}
+            <span className="unit_hp">Хитпоинты: {this.props.unit.hp}</span><br/> {/* подставляем параметры из получаемого пропс */}
+            <span className="unit_dmg">Урон: {this.props.unit._weapon.dmg}</span><br/> {/* подставляем параметры из получаемого пропс */}
+            </div>
+
+            <div className="moves">
+            <button className="moves_btn missing" >Уклонение</button>
+            <button className="moves_btn aim" >Прицелиться</button>
+            <button className="moves_btn atak" >Атаковать</button>
+            <button className="moves_btn defend" > Защититься</button>
+            <button  className="moves_btn heal">Полечиться</button>
+            </div>
+            
+        </div>
+        
+       
+    )
 }
-
-
-
-
-if(finn!=null){
-	let finnTheArcher = document.querySelector("#Archer");
-
-finnTheArcher.querySelector('.unit_name').innerText = finn.name;
-finnTheArcher.querySelector('.unit_weapon>span').innerText = finn.weapon;
-finnTheArcher.querySelector('.unit_def>span').innerText = finn.def;
-finnTheArcher.querySelector('.unit_hp>span').innerText = finn.hp;
-finnTheArcher.querySelector('.unit_dmg>span').innerText = finn.atk;
-//finnTheArcher.querySelector('.unit_crit_dmg').innerText = finn.crit_dmg не готово
-finnTheArcher.querySelector('.unit_speed').innerText = finn.speed;
 }
+ReactDOM.render(units,
+document.querySelector('.units'))
 
-document.querySelector("#Attack").onclick = function(){
-	socket.emit("Attack",socket.id);
-	console.log(socket.id);
-}
-socket.on('Player', function(data){
-	artur=data.player;
-});
-socket.on('message', function(data) {
-    artur.hp-=1;
-});
 
-socket.emit('lol',artur);
+
+ 

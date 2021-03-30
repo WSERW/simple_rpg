@@ -1,19 +1,15 @@
 {
-  "name": "killzoneserver",
+  "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "script",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "amdefine": "^1.0.1",
     "express": "^4.17.1",
-    "require.js": "^1.0.0",
-    "socket.io": "^2.3.0",
-    "soket.io": "0.0.1-security"
+    "socket.io": "^2.3.0"
   }
 }
