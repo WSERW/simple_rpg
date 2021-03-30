@@ -1,0 +1,17 @@
+html{
+	font-family: Open Sans;
+}
+body{
+	background-image: url(static/img/tt.jpg);
+	background-size: cover;
+	color: black;
+
+}
+.hero{
+	display: flex;
+
+}
+.luchnik{
+	
+	margin-left: 30px;
+}
