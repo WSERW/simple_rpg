@@ -1,0 +1,118 @@
+html{
+	font-family: Open Sans;
+}
+body{
+	background-image: url(tt.jpg);
+	background-size: cover;
+	color: black;
+	margin:0;
+	background-repeat: no-repeat;
+
+}
+.unit{
+	background-position: center;
+	background-size: cover;
+	flex-direction: column;
+	display: flex;
+	width: 200px;
+	height: 400px;
+	background-image: url(bob.png);
+    
+
+}
+.stats span{
+	margin-bottom: 15px;
+	display :inline-block;
+}
+.stats{
+	opacity: 0;
+	text-align: center;
+	background-size: cover;
+	background-color: #2E3333;
+	color: #CEFF68;
+    font-size: 20px;
+    font-family: "Arial"; 
+
+// добавить кнопки поработать над их офармлением 
+
+	
+	
+}
+.unit:hover .stats{
+  opacity: 1;
+  transform:translate(200px); 
+  transition: 0.5s;
+  
+}
+.moves_btn {
+	margin-bottom: 15px;
+	display: inline-block;
+	text-align: center;
+	color: #CEFF68;
+    transition: 0.4s;
+    font-family: "Arial"; 
+    outline: none;
+    border: 1px solid purple;
+}
+.moves_btn:hover {
+  color: white;
+  background-color: black;
+
+}
+.moves_btn:active{
+	color: darkblue;
+
+}
+.moves{
+	opacity: 0;
+	text-align: center;
+	background-size: cover;
+	background-color: #2E3333;
+
+    
+
+
+}
+.unit:hover .moves{
+  opacity: 1;
+  transform:translate(200px); 
+  transition: 0.5s;
+}
+.heal{
+	background-color: green;
+	padding: 7px;
+	
+}
+.missing{
+	background-color: gray;
+	padding: 7px;
+
+}
+.aim{
+	background-color: pink;
+	padding: 7px;
+
+}
+.atak{
+	background-color: red;
+	padding: 7px;
+
+}
+.defend{
+	background-color: blue;
+	padding: 7px;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

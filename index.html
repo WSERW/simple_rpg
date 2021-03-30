@@ -5,11 +5,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="./static/style.css">
+
 </head>
 
 <body>
-
+     									
 	<div class="units">
 		<!-- пример вывода персонажа -->
 		<div class="unit" id='Knight'>
@@ -28,7 +29,7 @@
       <h4 class="unit_weapon">weapon:<span>Лук и стрелы</span></h4>
       <h4 class="unit_def">protaction:<span>5</span></h4>
       <h4 class="unit_hp">hit points:<span>40</span></h4>
-      <h4 class="inventory Archer">inventory:<span>bow,arrows</span> </h4>
+      <h4 class="inventory Archer">inventory:<span>bow,arrows,legendary bow</span> </h4>
       <h4 class="unit_dmg">damage:<span>25</span></h4>
       <!-- <h4 class="unit_crit_dmg">critical damage:<span>100</span></h4>  не готово -->
       <h4 class="unit_speed">speed:<span>15</span></h4>
@@ -36,9 +37,13 @@
   </div>
  
 
-	
-<script src="script.js"></script>
-  <script src="render.js"></script>
+	<script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+
+<script src="./static/script.js"></script>
+  <script type="text/babel" src="./static/render.js"></script>
 	
 </body>
 
