@@ -8,7 +8,8 @@ var server = http.Server(app);
 var io = socketIO(server);
 app.set('port', 5000);
 app.use('/static', express.static(__dirname + '/static'));
-import {Knight,Unit,Archer,Wizard} from './script.js';
+var units = require('./script')
+// import {Knight,Unit,Archer,Wizard} from './script.js';
 
 // Маршруты
 app.get('/', function(request, response) {
@@ -28,16 +29,26 @@ setInterval(function() {
     io.sockets.emit('message', 'hi!');
 }, 1000);
 
+
 var players = {};
 io.on('connection', function(socket) {
   socket.on('new player', function() {
-    players[socket.id] = new Knight('Артур');
-    io.sockets.emit('Player', players[socket.id]);
+    players[socket.id] = new units.Knight('Артур');
+    io.sockets.emit('Player', {
+      player:players[socket.id],
+      id:socket.id
+    });
+    
+    
   });
 
 
 
+  socket.on("Attack", function(data){
   
+  console.log(data);
+  });
+
   
   socket.on('mouse', function(data) {
     let a = {

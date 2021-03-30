@@ -1,5 +1,5 @@
 // список возможных предметов
-allitems = [
+let allitems = [
 	{
 		type: "def",
 	name: "barrier",
@@ -59,7 +59,11 @@ allitems = [
 		}
 	},
 ];
-// главный класс
+// определение функции define
+// если не работает нужно доустановить amdefine (npm install)
+if (typeof define !== 'function') {
+    var define = require('amdefine')(module);
+}
 class Unit {
 	lvl = 1;
 	maxHp = 30;
@@ -180,55 +184,59 @@ class Unit {
 		return `У вас ${this._hp} здоровья`;
 	}
 }
-
-
-class Knight extends Unit {
-	maxHp = 50;
-	_hp = this.maxHp;
-	def = 10;
-	atk = 15;
-	speed = 1;
-	aim = 9;
-	spec = 'Рыцарь';
-	maxitems = 3;
-	availableWeapons = ['sword', 'pike', 'axe'];
-	// способности класса
-	shield() {
-		console.log(`${this.name} готовится обороняться`);
-		this._def += 1;
-		this._atk -= 1;
-	}
-	attack() {
-		console.log(`${this.name} готовится к атаке`);
-		this._def -= 1;
-		this._atk += 1;
-		this._aim += 1;
-	}
-	healthing() {
-		console.log(`${this.name} заживляет раны`);
-		this._hp += 3;
-	}
-	set weapon(value) {
-
-		console.log(`${this.spec} ${this.name} вооружился ${value.name}, урон: ${value.dmg}`);
-		if (!this.availableWeapons.includes(value.name)) {
-			this._atk = 0;
-			console.log(`${this.name} не может использовать ${value.name}`);
-		} else {
-			this._atk = 15;
+// определение экспортируемых классов
+define(
+	
+	{
+	Knight: class Knight extends Unit {
+		maxHp = 50;
+		_hp = this.maxHp;
+		def = 10;
+		atk = 15;
+		speed = 1;
+		aim = 9;
+		spec = 'Рыцарь';
+		maxitems = 3;
+		availableWeapons = ['sword', 'pike', 'axe'];
+		// способности класса
+		shield() {
+			console.log(`${this.name} готовится обороняться`);
+			this._def += 1;
+			this._atk -= 1;
 		}
-		this._weapon = value;
+		attack() {
+			console.log(`${this.name} готовится к атаке`);
+			this._def -= 1;
+			this._atk += 1;
+			this._aim += 1;
+		}
+		healthing() {
+			console.log(`${this.name} заживляет раны`);
+			this._hp += 3;
+		}
+		set weapon(value) {
+	
+			console.log(`${this.spec} ${this.name} вооружился ${value.name}, урон: ${value.dmg}`);
+			if (!this.availableWeapons.includes(value.name)) {
+				this._atk = 0;
+				console.log(`${this.name} не может использовать ${value.name}`);
+			} else {
+				this._atk = 15;
+			}
+			this._weapon = value;
+		}
+		get weapon() {
+			if (!this._weapon) {
+				console.log(`${this.name} безоружен`);
+				return
+			};
+			return `${this.name} вооружен ${this._weapon.name}, урон: ${this._weapon.dmg}`;
+		}
 	}
-	get weapon() {
-		if (!this._weapon) {
-			console.log(`${this.name} безоружен`);
-			return
-		};
-		return `${this.name} вооружен ${this._weapon.name}, урон: ${this._weapon.dmg}`;
-	}
-}
-
-class Archer extends Unit {
+	
+},
+{
+	Archer: class Archer extends Unit {
 	maxHp = 30;
 	_hp = this.maxHp;
 	def = 5;
@@ -274,7 +282,10 @@ class Archer extends Unit {
 	}
 }
 
-class Wizard extends Unit {
+},
+
+{
+	Wizard: class Wizard extends Unit {
 	maxHp = 25;
 	_hp = this.maxHp;
 	def = 10;
@@ -368,29 +379,37 @@ class Wizard extends Unit {
 		return `${this.name} вооружен ${this._weapon.name}, урон: ${this._weapon.dmg}`;
 	}
 }
-// рандомайзер
-function rand(min, max) {
-	min = Math.ceil(min);
-	max = Math.floor(max);
-	return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
+
 }
-// список игроков
-let bob = new Knight('bob');
-bob.weapon = {
-	name: 'axe',
-	dmg: 8,
-	say: 3
-}
-let jack = new Archer('jack');
-jack.weapon = {
-	name: 'bow',
-	dmg: 5,
-	say: 0
-}
-jack.speed = 2;
-let Gandalf = new Wizard('Gandalf');
-Gandalf.weapon = {
-	name: 'stick',
-	dmg: 10,
-	say: 1
-}
+
+);
+
+
+
+
+// // рандомайзер
+// function rand(min, max) {
+// 	min = Math.ceil(min);
+// 	max = Math.floor(max);
+// 	return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
+// }
+// // список игроков
+// let bob = new Knight('bob');
+// bob.weapon = {
+// 	name: 'axe',
+// 	dmg: 8,
+// 	say: 3
+// }
+// let jack = new Archer('jack');
+// jack.weapon = {
+// 	name: 'bow',
+// 	dmg: 5,
+// 	say: 0
+// }
+// jack.speed = 2;
+// let Gandalf = new Wizard('Gandalf');
+// Gandalf.weapon = {
+// 	name: 'stick',
+// 	dmg: 10,
+// 	say: 1
+// }

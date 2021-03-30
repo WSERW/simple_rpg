@@ -2,6 +2,10 @@ var socket = io();
 var artur;
 var finn;
 
+socket.emit("new player",socket.id);
+socket.on("Player", function(data){
+	console.log(data);
+});
 if(artur!=null){
 	let arturTheKnight = document.querySelector("#Knight")
 arturTheKnight.querySelector('.unit_name').innerText = artur.name;
@@ -29,9 +33,12 @@ finnTheArcher.querySelector('.unit_dmg>span').innerText = finn.atk;
 finnTheArcher.querySelector('.unit_speed').innerText = finn.speed;
 }
 
-
+document.querySelector("#Attack").onclick = function(){
+	socket.emit("Attack",socket.id);
+	console.log(socket.id);
+}
 socket.on('Player', function(data){
-	artur=data;
+	artur=data.player;
 });
 socket.on('message', function(data) {
     artur.hp-=1;
