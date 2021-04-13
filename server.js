@@ -29,43 +29,14 @@ setInterval(function() {
     io.sockets.emit('message', 'hi!');
 }, 1000);
 
-var pl = [];
+
 var players = {};
 io.on('connection', function(socket) {
-  socket.on('new player', function(data) {
-    if(data.cl=="Knight"){
-      players[socket.id] = new units.Knight(data.name);
-   
-    players[socket.id].weapon = {
-      	name: 'axe',
-      	dmg: 5,
-      	say: 0
-      }
-    }else if(data.cl=="Archer"){
-     
-      players[socket.id] = new units.Archer(data.name);
-    players[socket.id].weapon = {
-      	name: 'bow',
-      	dmg: 15,
-      	say: 3
-      }
-    }else if(data.cl=="Wizard"){
-     
-      players[socket.id] = new units.Wizard(data.name);
-    players[socket.id].weapon = {
-      	name: 'stick',
-      	dmg: 10,
-      	say: 1
-      }
-    }else{
-      console.log(data.cl);
-    }
-    
-    pl.push(players[socket.id]);
+  socket.on('new player', function() {
+    players[socket.id] = new units.Knight('Артур');
     io.sockets.emit('Player', {
       player:players[socket.id],
-      id:socket.id,
-      my:pl.length-1
+      id:socket.id
     });
     
     
@@ -74,16 +45,31 @@ io.on('connection', function(socket) {
 
 
   socket.on("Attack", function(data){
-    if(data==0){
-      pl[1].hitEnemy(pl[0]);
-    }else{
-      pl[0].hitEnemy(pl[1]);
-    }
   
+  console.log(data);
   });
 
   
+  socket.on('mouse', function(data) {
+    let a = {
+      x:players[socket.id].x-data.x,
+      y:players[socket.id].y-data.y
+  }
+let b = {
+  x:players[socket.id].x-data.x,
+  y:0
+}
 
+players[socket.id].angle = Math.acos((a.x**2)/(Math.sqrt(a.x**2+a.y**2)*Math.sqrt(b.x**2)));
+// console.log(180/Math.PI*angle);
+if(data.x > players[socket.id].x && data.y > players[socket.id].y){
+  players[socket.id].angle += Math.PI;
+}else if(data.x > players[socket.id].x){
+  players[socket.id].angle = Math.PI-players[socket.id].angle;
+}else if(data.y > players[socket.id].y){
+  players[socket.id].angle = Math.PI*2-players[socket.id].angle;
+}
+  });
 
 
   
@@ -103,8 +89,7 @@ io.on('connection', function(socket) {
     }
 });
 setInterval(function() {
-  io.sockets.emit('state', pl);
-  
+  io.sockets.emit('state', players);
 }, 1000 / 60);
 
 });

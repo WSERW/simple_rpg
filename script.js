@@ -185,17 +185,17 @@ class Unit {
 	}
 }
 // определение экспортируемых классов
-
+define(
 	
-	
-	class Knight extends Unit {
+	{
+	Knight: class Knight extends Unit {
 		maxHp = 50;
 		_hp = this.maxHp;
 		def = 10;
 		atk = 15;
 		speed = 1;
 		aim = 9;
-		spec = 'Knight';
+		spec = 'Рыцарь';
 		maxitems = 3;
 		availableWeapons = ['sword', 'pike', 'axe'];
 		// способности класса
@@ -234,9 +234,9 @@ class Unit {
 		}
 	}
 	
-
-
-	class Archer extends Unit {
+},
+{
+	Archer: class Archer extends Unit {
 	maxHp = 30;
 	_hp = this.maxHp;
 	def = 5;
@@ -244,7 +244,7 @@ class Unit {
 	speed = 3;
 	aim = 1;
 	maxitems = 3;
-	spec = 'Archer';
+	spec = 'Лучник';
 	availableWeapons = ['bow','knife'];
 	// способности класса
 	speeding() {
@@ -282,10 +282,10 @@ class Unit {
 	}
 }
 
+},
 
-
-
-	class Wizard extends Unit {
+{
+	Wizard: class Wizard extends Unit {
 	maxHp = 25;
 	_hp = this.maxHp;
 	def = 10;
@@ -294,7 +294,7 @@ class Unit {
 	aim = 8;
 	man = 0;
 	maxitems = 3;
-	spec = 'Wizard';
+	spec = 'Маг';
 	availableWeapons = ['book','fireball','stick'];
 	// способности класса
 	maning(){
@@ -380,23 +380,19 @@ class Unit {
 	}
 }
 
+}
 
-define({
-	Unit:Unit,
-	Knight:Knight,
-	Archer:Archer,
-	Wizard:Wizard
-});
+);
 
 
 
 
 // // рандомайзер
-function rand(min, max) {
-	min = Math.ceil(min);
-	max = Math.floor(max);
-	return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
-}
+// function rand(min, max) {
+// 	min = Math.ceil(min);
+// 	max = Math.floor(max);
+// 	return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
+// }
 // // список игроков
 // let bob = new Knight('bob');
 // bob.weapon = {
