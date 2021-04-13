@@ -33,63 +33,22 @@ setInterval(function() {
 var players = {};
 io.on('connection', function(socket) {
   socket.on('new player', function() {
-    players[socket.id] = new units.Knight('Артур');
-    io.sockets.emit('Player', {
+    players[socket.id] = new units.Archer('Артур');
+    io.sockets.emit('player', {
       player:players[socket.id],
       id:socket.id
     });
-    
-    
+    // io.sockets.emit('players', players);
   });
 
 
 
   socket.on("Attack", function(data){
-  
-  console.log(data);
+    console.log(data);
   });
 
-  
-  socket.on('mouse', function(data) {
-    let a = {
-      x:players[socket.id].x-data.x,
-      y:players[socket.id].y-data.y
-  }
-let b = {
-  x:players[socket.id].x-data.x,
-  y:0
-}
-
-players[socket.id].angle = Math.acos((a.x**2)/(Math.sqrt(a.x**2+a.y**2)*Math.sqrt(b.x**2)));
-// console.log(180/Math.PI*angle);
-if(data.x > players[socket.id].x && data.y > players[socket.id].y){
-  players[socket.id].angle += Math.PI;
-}else if(data.x > players[socket.id].x){
-  players[socket.id].angle = Math.PI-players[socket.id].angle;
-}else if(data.y > players[socket.id].y){
-  players[socket.id].angle = Math.PI*2-players[socket.id].angle;
-}
-  });
-
-
-  
-  socket.on('movement', function(data) {
-    var player = players[socket.id] || {};
-    if (data.left) {
-      player.x -= data.speed;
-    }
-    if (data.up) {
-      player.y -= data.speed;
-    }
-    if (data.right) {
-      player.x += data.speed;
-    }
-    if (data.down) {
-      player.y += data.speed;
-    }
-});
 setInterval(function() {
-  io.sockets.emit('state', players);
+  io.sockets.emit('players', players);
 }, 1000 / 60);
 
 });

@@ -1,14 +1,37 @@
 var socket = io();
 let unit;
-socket.emit("new player",socket.id);
-socket.on("Player", function(data){
-	console.log(data);
-	unit = data.player;
-	console.log(unit)
-	ReactDOM.render(<UnitRender unit={unit} />,
-	document.querySelector('.units'))
-});
 
+class Game extends React.Component{
+	constructor(props){
+		super(props)
+		this.state = {
+			players: {}
+		}
+	}
+	newPlayer(){
+		socket.emit("new player",socket.id);
+	}
+	playersData(){
+		socket.on("players", (data)=>{
+			this.setState({players: data})
+		});
+	}
+	componentDidMount(){
+		this.newPlayer()
+		this.playersData()
+	}
+	render(){
+		return(
+			<div className="game">
+				<div className="units">
+					{Object.keys(this.state.players).map((id) =>
+						<UnitRender key={id} unit={this.state.players[id]}/>
+					)}
+				</div>
+			</div>
+		)
+	}
+}
 class UnitRender extends React.Component{
 
 // функция компонента
@@ -36,3 +59,5 @@ render (){
     )
 }
 }
+ReactDOM.render(<Game />,
+	document.querySelector('#root'))

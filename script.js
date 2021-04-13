@@ -190,58 +190,53 @@ class Unit {
 	}
 }
 // определение экспортируемых классов
-define(
-	
-	{
-	Knight: class Knight extends Unit {
-		maxHp = 50;
-		_hp = this.maxHp;
-		def = 10;
-		atk = 15;
-		speed = 1;
-		aim = 9;
-		spec = 'Рыцарь';
-		maxitems = 3;
-		availableWeapons = ['sword', 'pike', 'axe'];
-		// способности класса
-		shield() {
-			console.log(`${this.name} готовится обороняться`);
-			this._def += 1;
-			this._atk -= 1;
-		}
-		attack() {
-			console.log(`${this.name} готовится к атаке`);
-			this._def -= 1;
-			this._atk += 1;
-			this._aim += 1;
-		}
-		healthing() {
-			console.log(`${this.name} заживляет раны`);
-			this._hp += 3;
-		}
-		set weapon(value) {
-	
-			console.log(`${this.spec} ${this.name} вооружился ${value.name}, урон: ${value.dmg}`);
-			if (!this.availableWeapons.includes(value.name)) {
-				this._atk = 0;
-				console.log(`${this.name} не может использовать ${value.name}`);
-			} else {
-				this._atk = 15;
-			}
-			this._weapon = value;
-		}
-		get weapon() {
-			if (!this._weapon) {
-				console.log(`${this.name} безоружен`);
-				return
-			};
-			return `${this.name} вооружен ${this._weapon.name}, урон: ${this._weapon.dmg}`;
-		}
+class Knight extends Unit {
+	maxHp = 50;
+	_hp = this.maxHp;
+	def = 10;
+	atk = 15;
+	speed = 1;
+	aim = 9;
+	spec = 'Рыцарь';
+	maxitems = 3;
+	availableWeapons = ['sword', 'pike', 'axe'];
+	// способности класса
+	shield() {
+		console.log(`${this.name} готовится обороняться`);
+		this._def += 1;
+		this._atk -= 1;
 	}
-	
-},
-{
-	Archer: class Archer extends Unit {
+	attack() {
+		console.log(`${this.name} готовится к атаке`);
+		this._def -= 1;
+		this._atk += 1;
+		this._aim += 1;
+	}
+	healthing() {
+		console.log(`${this.name} заживляет раны`);
+		this._hp += 3;
+	}
+	set weapon(value) {
+
+		console.log(`${this.spec} ${this.name} вооружился ${value.name}, урон: ${value.dmg}`);
+		if (!this.availableWeapons.includes(value.name)) {
+			this._atk = 0;
+			console.log(`${this.name} не может использовать ${value.name}`);
+		} else {
+			this._atk = 15;
+		}
+		this._weapon = value;
+	}
+	get weapon() {
+		if (!this._weapon) {
+			console.log(`${this.name} безоружен`);
+			return
+		};
+		return `${this.name} вооружен ${this._weapon.name}, урон: ${this._weapon.dmg}`;
+	}
+}
+
+class Archer extends Unit {
 	maxHp = 30;
 	_hp = this.maxHp;
 	def = 5;
@@ -286,11 +281,7 @@ define(
 		return `${this.name} вооружен ${this._weapon.name}, урон: ${this._weapon.dmg}`;
 	}
 }
-
-},
-
-{
-	Wizard: class Wizard extends Unit {
+class Wizard extends Unit {
 	maxHp = 25;
 	_hp = this.maxHp;
 	def = 10;
@@ -385,8 +376,13 @@ define(
 	}
 }
 
-}
-
+define(
+	{
+		Unit:Unit,
+		Knight:Knight,
+		Archer:Archer,
+		Wizard:Wizard,
+	}
 );
 
 
