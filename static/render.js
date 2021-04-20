@@ -18,13 +18,14 @@ class Game extends React.Component{
 		let cl = prompt("class(Knight,Archer,Wizard)");
 		this.setState(self:{name:name,class:cl,id:socket.id})
 		socket.emit("new player",{
-			name:this.state.self.name,
-			cl:this.state.self.name,
+			name:name,
+			cl:cl,
 		});
 	}
 	playersData(){
 		socket.on("players", (data)=>{
 			this.setState({players: data})
+			console.log(data)
 		});
 	}
 	componentDidMount(){
@@ -36,7 +37,7 @@ class Game extends React.Component{
 			<div className="game">
 				<div className="units">
 					{Object.keys(this.state.players).map((id) =>
-						<UnitRender key={id} unit={this.state.players[id] id={id}/>
+						<UnitRender key={id} unit={this.state.players[id]} id={id}/>
 					)}
 				</div>
 			</div>
@@ -73,7 +74,7 @@ class UnitRender extends React.Component{
 	            <div className="moves">
 	            <button className="moves_btn missing" >Уклонение</button>
 	            <button className="moves_btn aim" >Прицелиться</button>
-	            <button className="moves_btn atak" onClick=()=>{this.hitEnemy(this.state.enemyId)}>Атаковать</button>
+	            <button className="moves_btn atak" onClick={()=>{this.hitEnemy(this.state.enemyId)}}>Атаковать</button>
 	            <button className="moves_btn defend" > Защититься</button>
 	            <button  className="moves_btn heal">Полечиться</button>
 	            </div>

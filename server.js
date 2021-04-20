@@ -33,6 +33,7 @@ var pl = [];
 var players = {};
 io.on('connection', function(socket) {
   socket.on('new player', function(data) {
+  	console.log(data)
     if(data.cl=="Knight"){
       players[socket.id] = new units.Knight(data.name);
    
@@ -60,13 +61,14 @@ io.on('connection', function(socket) {
     }else{
       console.log(data.cl);
     }
+  	console.log(players)
     
-    pl.push(players[socket.id]);
-    io.sockets.emit('Player', {
-      player:players[socket.id],
-      id:socket.id,
-      my:pl.length-1
-    });
+    // pl.push(players[socket.id]);
+    // io.sockets.emit('Player', {
+    //   player:players[socket.id],
+    //   id:socket.id,
+    //   my:pl.length-1
+    // });
     // io.sockets.emit('players', players);
   });
 
@@ -74,7 +76,7 @@ io.on('connection', function(socket) {
 
  socket.on("Attack", function(data){
     console.log(data);
-      player[data.self].hitEnemy(player[data.enemy]);
+      players[data.self].hitEnemy(players[data.enemy]);
   });
 
 setInterval(function() {
