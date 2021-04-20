@@ -189,7 +189,6 @@ class Unit {
 		return `У вас ${this._hp} здоровья`;
 	}
 }
-// определение экспортируемых классов
 class Knight extends Unit {
 	maxHp = 50;
 	_hp = this.maxHp;
@@ -225,15 +224,15 @@ class Knight extends Unit {
 		} else {
 			this._atk = 15;
 		}
-		this._weapon = value;
-	}
-	get weapon() {
-		if (!this._weapon) {
-			console.log(`${this.name} безоружен`);
-			return
-		};
-		return `${this.name} вооружен ${this._weapon.name}, урон: ${this._weapon.dmg}`;
-	}
+			this._weapon = value;
+		}
+		get weapon() {
+			if (!this._weapon) {
+				console.log(`${this.name} безоружен`);
+				return
+			};
+			return `${this.name} вооружен ${this._weapon.name}, урон: ${this._weapon.dmg}`;
+		}
 }
 
 class Archer extends Unit {
@@ -244,7 +243,7 @@ class Archer extends Unit {
 	speed = 3;
 	aim = 1;
 	maxitems = 3;
-	spec = 'Лучник';
+	spec = 'Archer';
 	availableWeapons = ['bow','knife'];
 	// способности класса
 	speeding() {
@@ -290,7 +289,7 @@ class Wizard extends Unit {
 	aim = 8;
 	man = 0;
 	maxitems = 3;
-	spec = 'Маг';
+	spec = 'Wizard';
 	availableWeapons = ['book','fireball','stick'];
 	// способности класса
 	maning(){
@@ -376,24 +375,23 @@ class Wizard extends Unit {
 	}
 }
 
-define(
-	{
-		Unit:Unit,
-		Knight:Knight,
-		Archer:Archer,
-		Wizard:Wizard,
-	}
-);
+
+define({
+	Unit:Unit,
+	Knight:Knight,
+	Archer:Archer,
+	Wizard:Wizard
+});
 
 
 
 
 // // рандомайзер
-// function rand(min, max) {
-// 	min = Math.ceil(min);
-// 	max = Math.floor(max);
-// 	return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
-// }
+function rand(min, max) {
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min)) + min; //Максимум не включается, минимум включается
+}
 // // список игроков
 // let bob = new Knight('bob');
 // bob.weapon = {
