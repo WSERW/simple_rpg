@@ -43,6 +43,9 @@ io.on('connection', function(socket) {
       	dmg: 5,
       	say: 0
       }
+      players[socket.id].additem("barrier");
+      players[socket.id].additem("wall");
+      
     }else if(data.cl=="Archer"){
      
       players[socket.id] = new units.Archer(data.name);
@@ -51,6 +54,8 @@ io.on('connection', function(socket) {
       	dmg: 15,
       	say: 3
       }
+      players[socket.id].additem("barrier");
+      players[socket.id].additem("wall");
     }else if(data.cl=="Wizard"){
      
       players[socket.id] = new units.Wizard(data.name);
@@ -59,6 +64,8 @@ io.on('connection', function(socket) {
       	dmg: 10,
       	say: 1
       }
+      players[socket.id].additem("barrier");
+      players[socket.id].additem("wall");
     }else{
       console.log(data.cl);
     }
@@ -89,6 +96,24 @@ io.on('connection', function(socket) {
         console.log(players[en].name);
       players[data.self].hitEnemy(players[en]);
       socket.emit("Info",players[data.self].name + " атакует " + players[en].name);
+        break;
+      }
+    }
+    
+    
+  });
+
+  socket.on("Use", function(data){
+   
+    
+    for(var i = 0; i<pl.length; i++){
+      if(pl[i].player.name==data.enemy){
+        en=pl[i].id;
+        console.log(en);
+        console.log(data.enemy);
+        console.log(players[en].name);
+      players[data.self].use(data.using,players[en]);
+      socket.emit("Info",players[data.self].name + " использует на " + players[en].name + " " + data.using);
         break;
       }
     }

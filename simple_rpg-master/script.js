@@ -80,6 +80,7 @@ class Unit {
 	spec = 'без професси';
 	maxitems = 3;
 	items = [];
+	itemn = "";
 	_weapon = {
 		name: 'fist',
 		dmg: 1,
@@ -110,6 +111,10 @@ class Unit {
 		}else{
 		console.log(this.name + ' не имеет никаких предметов');
 	}
+	this.itemn = "";
+			for(let o = 0;o<this.items.length;o++){
+				this.itemn = this.itemn + this.items[o].name + ", ";
+			}
 	}
 	// добавление предмета
 	additem(n){
@@ -117,10 +122,18 @@ class Unit {
 			if(this.maxitems>=this.items.length){
 			for(let i = 0; i<allitems.length;i++){
 				if(allitems[i].name == n){
+					
 					this.items.push(allitems[i]);
+					
+						
+					
 					allitems[i].pasive(this,false);
 					console.log(this.name + ' получил ' + n);
 				}
+			}
+			this.itemn = "";
+			for(let o = 0;o<this.items.length;o++){
+				this.itemn = this.itemn + this.items[o].name + ", ";
 			}
 		}else{
 			console.log('У '+ this.name + ' нет места для предметов');

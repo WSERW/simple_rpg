@@ -58,11 +58,19 @@ class UnitRender extends React.Component{
 		this.aiming = this.aiming.bind(this);
 		this.shield = this.shield.bind(this);
 		this.healthing = this.healthing.bind(this);
+		this.use = this.use.bind(this);
 	}
 	hitEnemy(){
 		socket.emit("Attack",{
 			self:this.props.id,
 			enemy: prompt("Enemy's name:")
+		});
+	}
+	use(){
+		socket.emit("Use",{
+			self:this.props.id,
+			enemy: prompt("Enemy's name:"),
+			using: prompt("Item's name:")
 		});
 	}
 	aiming(){
@@ -105,6 +113,7 @@ class UnitRender extends React.Component{
 				<span className="unit_dmg">Скорость: {this.props.unit.speed}</span><br/> {/* подставляем параметры из получаемого пропс */}
 	            <span className="unit_dmg">Урон: {this.props.unit._weapon.dmg+this.props.unit._atk}</span><br/> {/* подставляем параметры из получаемого пропс */}
 				<span className="unit_dmg">Меткость: {this.props.unit.aim}</span><br/> {/* подставляем параметры из получаемого пропс */}
+				<span className="unit_dmg">Инвентарь: {this.props.unit.itemn}</span><br/> {/* подставляем параметры из получаемого пропс */}
 	            </div>
 
 	            <div className="moves">
@@ -113,6 +122,7 @@ class UnitRender extends React.Component{
 	            <button className="moves_btn atak" onClick={()=>{this.hitEnemy()}}>Атаковать</button>
 	            <button className="moves_btn defend" onClick={()=>{this.shield()}}> Защититься</button>
 	            <button  className="moves_btn heal" onClick={()=>{this.healthing()}}>Полечиться</button>
+				<button  className="moves_btn heal" onClick={()=>{this.use()}}>Использовать</button>
 	            </div>
 	        </div>
 	    )
