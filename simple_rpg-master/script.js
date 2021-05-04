@@ -146,7 +146,8 @@ class Unit {
 		}
 	
 		if (rand(1, 11) <= this.aim - enemy.speed) {
-			let dmg = (this._atk - enemy._def) / 10 * this._weapon.dmg + this._weapon.dmg;
+			// let dmg = (this._atk - enemy._def) / 10 * this._weapon.dmg + this._weapon.dmg;
+			let dmg = this._atk - enemy._def+this._weapon.dmg;
 			dmg-=rand(0,this._weapon.say+1);
 			if (dmg <= 0) {
 				console.log(`${enemy.name} заблокировал атаку`);
