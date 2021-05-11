@@ -35,6 +35,13 @@ var players = {};
 io.on('connection', function(socket) {
   socket.on('new player', function(data) {
   	console.log(data)
+    for(let i=0;i<pl.length;i++){
+      socket.emit("Info", pl[i].name);
+      if(data.name==pl[i].player.name){
+        io.sockets.emit('ename', socket.id);
+      
+      }
+    }
     if(data.cl=="Knight"){
       players[socket.id] = new units.Knight(data.name);
    
@@ -67,7 +74,8 @@ io.on('connection', function(socket) {
       players[socket.id].additem("barrier");
       players[socket.id].additem("wall");
     }else{
-      console.log(data.cl);
+      io.sockets.emit('ename', socket.id);
+      socket.emit("Info", pl);
     }
   	console.log(players)
     

@@ -1,9 +1,12 @@
 var socket = io();
 let unit;
+let nam;
+let cl;
 
 socket.on("Info", function(data){
 	console.log(data);
 	});
+	
 
 class Game extends React.Component{
 	constructor(props){
@@ -18,15 +21,29 @@ class Game extends React.Component{
 		}
 	}
 	newPlayer(){
-		let name = prompt("Hero's name:");
-		let cl = prompt("class(Knight,Archer,Wizard)");
-		this.setState(self:{name:name,class:cl,id:socket.id})
+		nam = prompt("Hero's name:");
+		cl = prompt("class(Knight,Archer,Wizard)");
+		this.setState(self:{name:nam,class:cl,id:socket.id})
 		socket.emit("new player",{
-			name:name,
+			name:nam,
 			cl:cl,
+			id:socket.id
 		});
 	}
 	playersData(){
+		socket.on("ename", function(data){
+			if(data==socket.id){
+			nam = prompt("Hero's name:");
+		cl = prompt("class(Knight,Archer,Wizard)");
+		// this.state.self={name:nam,class:cl,id:socket.id};
+		socket.emit("new player",{
+			name:nam,
+			cl:cl,
+			id:socket.id
+		});
+			console.log(nam, cl);
+	}
+			});
 		socket.on("players", (data)=>{
 			this.setState({players: data})
 			

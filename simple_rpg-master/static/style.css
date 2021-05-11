@@ -2,7 +2,7 @@ html{
 	font-family: Open Sans;
 }
 body{
-	background-image: url(tt.jpg);
+	background-image: url(map.png);
 	background-size: cover;
 	background-repeat: no-repeat;
 	color: black;
@@ -17,9 +17,9 @@ body{
 	padding: 20px;
 	margin:10px;
 	color: #fff;
-	background-image: url(static/img/tt.jpg);
+	background-image: url(static/img/map.png);
 	background-size: cover;
-	color: black;
+	color: rgb(255, 255, 255);
 
 }
 .hero{
