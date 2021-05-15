@@ -5,7 +5,7 @@ var path = require('path');
 var socketIO = require('socket.io');
 var app = express();
 var server = http.Server(app);
-var io = socketIO(server);
+var io = socketIO(server,{pingTimeout: 60000});
 app.set('port', 5000);
 app.use('/static', express.static(__dirname + '/static'));
 var units = require('./script');
@@ -39,7 +39,7 @@ io.on('connection', function(socket) {
       socket.emit("Info", pl[i].name);
       if(data.name==pl[i].player.name){
         io.sockets.emit('ename', socket.id);
-      
+      return;
       }
     }
     if(data.cl=="Knight"){
@@ -144,6 +144,20 @@ socket.on("Shield", function(data){
 socket.on("Healthing", function(data){
   socket.emit("Info",players[data.self].name + " лечится");
   players[data.self].healthing();
+});
+
+
+socket.on("Exit", function(data){
+  
+  
+    for(let i=0;i<pl.length;i++){
+    if(data==pl[i].id){
+     delete pl[i];
+    }
+  }
+  delete players[data];
+  
+  
 });
 
 setInterval(function() {

@@ -7,7 +7,15 @@ socket.on("Info", function(data){
 	console.log(data);
 	});
 	
+	setInterval(function() {
+		console.log(socket.id);
+	  }, 1000 / 60);
 
+	  window.onbeforeunload = function (){
+		
+		socket.emit("Exit", socket.id);
+		
+	  }
 class Game extends React.Component{
 	constructor(props){
 		super(props)
@@ -19,11 +27,14 @@ class Game extends React.Component{
 				id: 0,
 			},
 		}
+		this.newPlayer = this.newPlayer.bind(this);
+		this.playersData = this.playersData.bind(this);
 	}
 	newPlayer(){
+		
 		nam = prompt("Hero's name:");
 		cl = prompt("class(Knight,Archer,Wizard)");
-		this.setState(self:{name:nam,class:cl,id:socket.id})
+		this.setState({self:{name:nam,class:cl,id:socket.id}});
 		socket.emit("new player",{
 			name:nam,
 			cl:cl,
@@ -31,21 +42,15 @@ class Game extends React.Component{
 		});
 	}
 	playersData(){
+		var game = this;
 		socket.on("ename", function(data){
 			if(data==socket.id){
-			nam = prompt("Hero's name:");
-		cl = prompt("class(Knight,Archer,Wizard)");
-		// this.state.self={name:nam,class:cl,id:socket.id};
-		socket.emit("new player",{
-			name:nam,
-			cl:cl,
-			id:socket.id
-		});
-			console.log(nam, cl);
+				console.log(game);
+			game.newPlayer();
 	}
 			});
 		socket.on("players", (data)=>{
-			this.setState({players: data})
+			game.setState({players: data})
 			
 		});
 	}
