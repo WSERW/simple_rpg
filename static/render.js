@@ -1,6 +1,21 @@
 var socket = io();
 let unit;
+let nam;
+let cl;
 
+socket.on("Info", function(data){
+	console.log(data);
+	});
+	
+	setInterval(function() {
+		console.log(socket.id);
+	  }, 1000 / 60);
+
+	  window.onbeforeunload = function (){
+		
+		socket.emit("Exit", socket.id);
+		
+	  }
 class Game extends React.Component{
 	constructor(props){
 		super(props)
@@ -12,20 +27,31 @@ class Game extends React.Component{
 				id: 0,
 			},
 		}
+		this.newPlayer = this.newPlayer.bind(this);
+		this.playersData = this.playersData.bind(this);
 	}
 	newPlayer(){
-		let name = prompt("Hero's name:");
-		let cl = prompt("class(Knight,Archer,Wizard)");
-		this.setState(self:{name:name,class:cl,id:socket.id})
+		
+		nam = prompt("Hero's name:");
+		cl = prompt("class(Knight,Archer,Wizard)");
+		this.setState({self:{name:nam,class:cl,id:socket.id}});
 		socket.emit("new player",{
-			name:name,
+			name:nam,
 			cl:cl,
+			id:socket.id
 		});
 	}
 	playersData(){
+		var game = this;
+		socket.on("ename", function(data){
+			if(data==socket.id){
+				console.log(game);
+			game.newPlayer();
+	}
+			});
 		socket.on("players", (data)=>{
-			this.setState({players: data})
-			console.log(data)
+			game.setState({players: data})
+			
 		});
 	}
 	componentDidMount(){
@@ -50,13 +76,51 @@ class UnitRender extends React.Component{
 		this.state = {
 			enemyId: 0,
 		}
-		this.hitEnemy = this.hitEnemy.bind(this)
+		this.hitEnemy = this.hitEnemy.bind(this);
+		this.aiming = this.aiming.bind(this);
+		this.shield = this.shield.bind(this);
+		this.healthing = this.healthing.bind(this);
+		this.use = this.use.bind(this);
 	}
-	hitEnemy(enemyId){
+	hitEnemy(){
 		socket.emit("Attack",{
 			self:this.props.id,
-			enemy: enemyId,
+			enemy: prompt("Enemy's name:")
 		});
+	}
+	use(){
+		socket.emit("Use",{
+			self:this.props.id,
+			enemy: prompt("Enemy's name:"),
+			using: prompt("Item's name:")
+		});
+	}
+	aiming(){
+		socket.emit("Aim",{
+			self:this.props.id,
+			
+		});
+	}
+	speeding(){
+		socket.emit("Speeding",{
+			self:this.props.id,
+			
+		});
+		
+	}
+	shield(){
+		socket.emit("Shield",{
+			self:this.props.id,
+			
+		});
+		
+	}
+	healthing(){
+		socket.emit("Healthing",{
+			self:this.props.id,
+			
+		});
+		
 	}
 	render (){
 	    // генерируемый html
@@ -66,17 +130,21 @@ class UnitRender extends React.Component{
 	            <span className="unit_name">Имя: {this.props.unit.name}</span><br/>  {/* подставляем параметры из получаемого пропс */}
 	            <span className="unit_weapon">Оружие: {this.props.unit._weapon.name}</span><br/> {/* подставляем параметры из получаемого пропс */}
 	            <span className="unit_spec">Направление: {this.props.unit.spec}</span><br/> {/* подставляем параметры из получаемого пропс */}
-	            <span className="unit_def">Защита: {this.props.unit.def}</span><br/> {/* подставляем параметры из получаемого пропс */}
-	            <span className="unit_hp">Хитпоинты: {this.props.unit.hp}</span><br/> {/* подставляем параметры из получаемого пропс */}
-	            <span className="unit_dmg">Урон: {this.props.unit._weapon.dmg}</span><br/> {/* подставляем параметры из получаемого пропс */}
+	            <span className="unit_def">Защита: {this.props.unit._def}</span><br/> {/* подставляем параметры из получаемого пропс */}
+	            <span className="unit_hp">Хитпоинты: {this.props.unit._hp}</span><br/> {/* подставляем параметры из получаемого пропс */}
+				<span className="unit_dmg">Скорость: {this.props.unit.speed}</span><br/> {/* подставляем параметры из получаемого пропс */}
+	            <span className="unit_dmg">Урон: {this.props.unit._weapon.dmg+this.props.unit._atk}</span><br/> {/* подставляем параметры из получаемого пропс */}
+				<span className="unit_dmg">Меткость: {this.props.unit.aim}</span><br/> {/* подставляем параметры из получаемого пропс */}
+				<span className="unit_dmg">Инвентарь: {this.props.unit.itemn}</span><br/> {/* подставляем параметры из получаемого пропс */}
 	            </div>
 
 	            <div className="moves">
-	            <button className="moves_btn missing" >Уклонение</button>
-	            <button className="moves_btn aim" >Прицелиться</button>
-	            <button className="moves_btn atak" onClick={()=>{this.hitEnemy(this.state.enemyId)}}>Атаковать</button>
-	            <button className="moves_btn defend" > Защититься</button>
-	            <button  className="moves_btn heal">Полечиться</button>
+	            <button className="moves_btn missing" onClick={()=>{this.speeding()}}>Уклонение</button>
+	            <button className="moves_btn aim" onClick={()=>{this.aiming()}}>Прицелиться</button>
+	            <button className="moves_btn atak" onClick={()=>{this.hitEnemy()}}>Атаковать</button>
+	            <button className="moves_btn defend" onClick={()=>{this.shield()}}> Защититься</button>
+	            <button  className="moves_btn heal" onClick={()=>{this.healthing()}}>Полечиться</button>
+				<button  className="moves_btn heal" onClick={()=>{this.use()}}>Использовать</button>
 	            </div>
 	        </div>
 	    )

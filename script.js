@@ -74,12 +74,13 @@ class Unit {
 	atk = 10;
 	_atk = this.atk;
 	speed = 1;
-	_speed = this.atk;
+	
 	aim = 1;
 	_aim = this.aim;
 	spec = 'без професси';
 	maxitems = 3;
 	items = [];
+	itemn = "";
 	_weapon = {
 		name: 'fist',
 		dmg: 1,
@@ -110,6 +111,10 @@ class Unit {
 		}else{
 		console.log(this.name + ' не имеет никаких предметов');
 	}
+	this.itemn = "";
+			for(let o = 0;o<this.items.length;o++){
+				this.itemn = this.itemn + this.items[o].name + ", ";
+			}
 	}
 	// добавление предмета
 	additem(n){
@@ -117,10 +122,18 @@ class Unit {
 			if(this.maxitems>=this.items.length){
 			for(let i = 0; i<allitems.length;i++){
 				if(allitems[i].name == n){
+					
 					this.items.push(allitems[i]);
+					
+						
+					
 					allitems[i].pasive(this,false);
 					console.log(this.name + ' получил ' + n);
 				}
+			}
+			this.itemn = "";
+			for(let o = 0;o<this.items.length;o++){
+				this.itemn = this.itemn + this.items[o].name + ", ";
 			}
 		}else{
 			console.log('У '+ this.name + ' нет места для предметов');
@@ -144,13 +157,11 @@ class Unit {
 			console.log(`${this.name} безоружен`);
 			return;
 		}
-		if (rand(1, 11) <= this._weapon.say) {
-			let dmg = (this._atk - this._def) / 10 * this._weapon.dmg + this._weapon.dmg;
-			this._hp -= dmg / 2;
-			console.log(`${this.name} нанёс себе ${dmg} урона.`);
-		}
+	
 		if (rand(1, 11) <= this.aim - enemy.speed) {
-			let dmg = (this._atk - enemy._def) / 10 * this._weapon.dmg + this._weapon.dmg;
+			// let dmg = (this._atk - enemy._def) / 10 * this._weapon.dmg + this._weapon.dmg;
+			let dmg = this._atk - enemy._def+this._weapon.dmg;
+			dmg-=rand(0,this._weapon.say+1);
 			if (dmg <= 0) {
 				console.log(`${enemy.name} заблокировал атаку`);
 			} else {
@@ -202,14 +213,26 @@ class Knight extends Unit {
 	// способности класса
 	shield() {
 		console.log(`${this.name} готовится обороняться`);
-		this._def += 1;
+		this._def += 3;
 		this._atk -= 1;
+	}
+
+	aiming() {
+		console.log(`${this.name} концентрируется`)
+		this.aim += 1;
+		
+	}
+	speeding() {
+		console.log(`${this.name} готовится к укланению`);
+		this.speed += 1;
+		this._atk -= 1;
+		this._def -= 5;
 	}
 	attack() {
 		console.log(`${this.name} готовится к атаке`);
 		this._def -= 1;
 		this._atk += 1;
-		this._aim += 1;
+		
 	}
 	healthing() {
 		console.log(`${this.name} заживляет раны`);
@@ -246,15 +269,20 @@ class Archer extends Unit {
 	spec = 'Archer';
 	availableWeapons = ['bow','knife'];
 	// способности класса
+	shield() {
+		console.log(`${this.name} готовится обороняться`);
+		this._def += 3;
+		this.speed -= 1;
+	}
 	speeding() {
 		console.log(`${this.name} готовится к укланению`);
-		this._speed += 1;
+		this.speed += 1;
 		this._atk -= 5;
 	}
 	aiming() {
 		console.log(`${this.name} концентрируется`)
-		this._aim += 1;
-		this._atk += 3;
+		this.aim += 3;
+		this._atk += 1;
 	}
 	healthing() {
 		console.log(`${this.name} заживляет раны`);
@@ -292,6 +320,17 @@ class Wizard extends Unit {
 	spec = 'Wizard';
 	availableWeapons = ['book','fireball','stick'];
 	// способности класса
+	shield() {
+		console.log(`${this.name} готовится обороняться`);
+		this._def += 1;
+		this._atk -= 3;
+	}
+	speeding() {
+		console.log(`${this.name} готовится к укланению`);
+		this.speed += 1;
+		this._atk -= 3;
+		this._def -= 3;
+	}
 	maning(){
 		this.man++;
 		console.log(`${this.name} накапливает силу`);
@@ -309,17 +348,12 @@ class Wizard extends Unit {
 	}
 	aiming() {
 		console.log(`${this.name} концентрируется`)
-		this._aim += 1;
-		this._atk += 3;
+		this.aim += 1;
+		this._atk += 1;
 	}
-	healthing(hit) {
-		if(this.man>=1){
-		console.log(`${this.name} усердно заживляет раны ${hit.name}`);
-		hit._hp += 5;
-		this.man-=1;
-	}else{
-		console.log(`${this.name} недостаточно силён для этого заклинания`);
-	}
+	healthing() {
+		console.log(`${this.name} заживляет раны`);
+		this._hp+=5;
 	}
 	finaldef(){
 		if(this.man>=5){
