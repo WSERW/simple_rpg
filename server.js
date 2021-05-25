@@ -26,22 +26,18 @@ server.listen(5000, function() {
 io.on('connection', function(socket) {
 });
 
-setInterval(function() {
-    io.sockets.emit('message', 'hi!');
-}, 1000);
+
 
 var pl = [];
 var players = {};
+let chat = [];
 io.on('connection', function(socket) {
+  setInterval(function() {
+    socket.emit('players', players); 
+    
+  }, 1000);
   socket.on('new player', function(data) {
-  	console.log(data)
-    for(let i=0;i<pl.length;i++){
-      socket.emit("Info", pl[i].name);
-      if(data.name==pl[i].player.name){
-        io.sockets.emit('ename', socket.id);
-      return;
-      }
-    }
+  	
     if(data.cl=="Knight"){
       players[socket.id] = new units.Knight(data.name);
    
@@ -74,7 +70,7 @@ io.on('connection', function(socket) {
       players[socket.id].additem("barrier");
       players[socket.id].additem("wall");
     }else{
-      io.sockets.emit('ename', socket.id);
+      
       socket.emit("Info", pl);
     }
   	console.log(players)
@@ -83,6 +79,7 @@ io.on('connection', function(socket) {
       player:players[socket.id],
       id:socket.id
     });
+    
     // io.sockets.emit('Player', {
     //   player:players[socket.id],
     //   id:socket.id,
@@ -160,8 +157,18 @@ socket.on("Exit", function(data){
   
 });
 
+socket.on("Send", function(data){
+console.log(data);
+chat.push(data);
+if(chat.length>30){
+  chat.shift();
+}
+socket.emit("Chat", chat);
+});
+
 setInterval(function() {
-  io.sockets.emit('players', players); 
-}, 1000 / 60);
+socket.emit("Chat", chat);
+  
+}, 1000);
 
 });

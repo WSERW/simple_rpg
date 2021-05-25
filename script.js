@@ -74,7 +74,7 @@ class Unit {
 	atk = 10;
 	_atk = this.atk;
 	speed = 1;
-	
+	teem = 0;
 	aim = 1;
 	_aim = this.aim;
 	spec = 'без професси';

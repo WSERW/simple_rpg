@@ -1,6 +1,7 @@
 html{
 	font-family: Open Sans;
 }
+
 body{
 	background-image: url(map.png);
 	background-size: cover;
@@ -8,7 +9,11 @@ body{
 	color: black;
 
 }
-
+.game{
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+}
 .units{
 	display: flex;
 }
@@ -16,6 +21,7 @@ body{
 	background-color: rgba(0,0,0,0.5);
 	padding: 20px;
 	margin:10px;
+	
 	color: #fff;
 	background-image: url(static/img/map.png);
 	background-size: cover;
@@ -30,4 +36,33 @@ body{
 
 	margin-left: 30px;
 
+}
+.chat{
+	position: relative;
+	background-color: rgba(0,0,0,0.5);
+	
+	width: 15%;
+	height: 90vh;
+	background-size: cover;
+	color: rgb(255, 255, 255);
+}
+.ch{
+	width: 100%;
+}
+#input{
+position: absolute;
+bottom: 0;
+width: 96%;
+left: 0;
+height: 5vh;
+}
+.word{
+	width: 100%;
+	display: inline-block;
+	white-space: normal;
+	transform: translate(0,30px);
+}
+.cha{
+	position: absolute;
+	transform: translate(0,-25px);
 }
