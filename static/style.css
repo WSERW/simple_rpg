@@ -19,9 +19,9 @@ body{
 }
 .unit{
 	background-color: rgba(0,0,0,0.5);
-	padding: 20px;
+	padding: 10px;
 	margin:10px;
-	
+	margin-top: 0px;
 	color: #fff;
 	background-image: url(static/img/map.png);
 	background-size: cover;
@@ -67,8 +67,8 @@ height: 5vh;
 	transform: translate(0,-25px);
 }
 #sprite{
-	width: 20vh;
-	height: 20vh;
+	width: 18vh;
+	height: 18vh;
 	
 }
 .interface{
@@ -90,21 +90,19 @@ height: 5vh;
 	/* image-rendering: pixelated; */
 	
 }
-.atak{
-	transform: translate(0,-50px);
+
+.self_unit{
+	position: absolute;
+	background-color: rgba(0,0,0,0.5);
+	color: #fff;
+	margin:10px;
+	padding: 10px;
+	bottom: 0;
 }
-.aim, .defend{
-	transform: translate(0,-40px);
-	width: 18vh;
-	height: 18vh;
-}
-.missing, .heal{
-	transform: translate(0,-30px);
-	width: 16vh;
-	height: 16vh;
-}
-.use{
-	transform: translate(0,-20px);
-	width: 15vh;
-	height: 15vh;
+
+.box{
+	transform: translate(-25vh,-20vh);
+	width: 10vh;
+	height: 10vh;
+	background-image: url(box.png);
 }

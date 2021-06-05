@@ -214,7 +214,7 @@ class Knight extends Unit {
 	shield() {
 		console.log(`${this.name} готовится обороняться`);
 		this._def += 3;
-		this._atk -= 1;
+		this._atk += 1;
 	}
 
 	aiming() {
@@ -282,7 +282,7 @@ class Archer extends Unit {
 	aiming() {
 		console.log(`${this.name} концентрируется`)
 		this.aim += 3;
-		this._atk += 1;
+		this._atk += 2;
 	}
 	healthing() {
 		console.log(`${this.name} заживляет раны`);

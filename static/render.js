@@ -170,12 +170,23 @@ this.setState({mes:e.target.value});
 	}
 
 	render() {
+		let self = "";
+		let slot1=this.state.players[socket.id].items
+		if(this.state.players[socket.id]){
+			self=<UnitRender self={true} unit={this.state.players[socket.id]} id={socket.id}/>;
+		}
 		return (
 			<div className="game">
 				<div className="units">
-					{Object.keys(this.state.players).map((id) =>
-						<UnitRender key={id} unit={this.state.players[id]} id={id} />
-					)}
+					{Object.keys(this.state.players).map((id) =>{
+					if(id!=this.state.self.id){
+						return <UnitRender key={id} unit={this.state.players[id]} id={id} />;
+					}
+						
+						
+				})}
+				
+				{self}
 				</div>
 				<form className="chat" onSubmit={this.send} onChange={this.change}>
 				<h2 className="cha">Chat:</h2>
@@ -194,6 +205,9 @@ this.setState({mes:e.target.value});
 					<button className="moves_btn defend" onClick={() => { this.shield() }}><img className="icon" src="static/shield.png"/></button>
 					<button className="moves_btn heal" onClick={() => { this.healthing() }}><img className="icon" src="static/heal.png"/></button>
 					<button className="moves_btn use" onClick={() => { this.use() }}><img className="icon" src="static/use.png"/></button>
+					<button className="moves_btn box" onClick={() => { this.use() }}><img className="icon" src="static/use.png"/></button>
+					<button className="moves_btn box" onClick={() => { this.use() }}><img className="icon" src="static/use.png"/></button>
+					<button className="moves_btn box" onClick={() => { this.use() }}><img className="icon" src="static/use.png"/></button>
 				</div>
 			</div>
 		)
@@ -208,9 +222,13 @@ class UnitRender extends React.Component {
 	}
 	render() {
 		let sprite = "static/" + this.props.unit.spec + ".png";
+		let className="unit"
+		if(this.props.self){
+			className="self_unit";
+		}
 		
 		return (
-			<div className="unit">
+			<div className={className}>
 				<div className="stats">
 					<span className="unit_name">Имя: {this.props.unit.name}</span><br />  {/* подставляем параметры из получаемого пропс */}
 					<span className="unit_weapon">Оружие: {this.props.unit._weapon.name}</span><br /> {/* подставляем параметры из получаемого пропс */}

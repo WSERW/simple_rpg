@@ -160,7 +160,7 @@ socket.on("Exit", function(data){
 socket.on("Send", function(data){
 console.log(data);
 chat.push(data);
-if(chat.length>30){
+if(chat.length>15){
   chat.shift();
 }
 socket.emit("Chat", chat);
