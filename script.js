@@ -207,7 +207,7 @@ class Knight extends Unit {
 	atk = 15;
 	speed = 1;
 	aim = 9;
-	spec = 'Рыцарь';
+	spec = 'Knight';
 	maxitems = 3;
 	availableWeapons = ['sword', 'pike', 'axe'];
 	// способности класса

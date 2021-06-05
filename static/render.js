@@ -30,6 +30,51 @@ class Game extends React.Component {
 		this.send = this.send.bind(this);
 		this.change = this.change.bind(this);
 		this.chat = this.chat.bind(this);
+		this.hitEnemy = this.hitEnemy.bind(this);
+		this.aiming = this.aiming.bind(this);
+		this.shield = this.shield.bind(this);
+		this.healthing = this.healthing.bind(this);
+		this.use = this.use.bind(this);
+	}
+	hitEnemy() {
+		socket.emit("Attack", {
+			self: this.state.self.id,
+			enemy: prompt("Enemy's name:")
+		});
+	}
+	use() {
+		socket.emit("Use", {
+			self: this.state.self.id,
+			enemy: prompt("Enemy's name:"),
+			using: prompt("Item's name:")
+		});
+	}
+	aiming() {
+		socket.emit("Aim", {
+			self: this.state.self.id,
+
+		});
+	}
+	speeding() {
+		socket.emit("Speeding", {
+			self: this.state.self.id,
+
+		});
+
+	}
+	shield() {
+		socket.emit("Shield", {
+			self: this.state.self.id,
+
+		});
+
+	}
+	healthing() {
+		socket.emit("Healthing", {
+			self: this.state.self.id,
+
+		});
+
 	}
 	send(e){
 		e.preventDefault();
@@ -142,6 +187,14 @@ this.setState({mes:e.target.value});
 				)}
 				<input type="text" id="input"/>
 				</form>
+				<div className="interface">
+					<button className="moves_btn missing" onClick={() => { this.speeding() }}><img className="icon" src="static/speed.png"/></button>
+					<button className="moves_btn aim" onClick={() => { this.aiming() }}><img className="icon" src="static/aim.png"/></button>
+					<button className="moves_btn atak" onClick={() => { this.hitEnemy() }}><img className="icon" src="static/sword.png"/></button>
+					<button className="moves_btn defend" onClick={() => { this.shield() }}><img className="icon" src="static/shield.png"/></button>
+					<button className="moves_btn heal" onClick={() => { this.healthing() }}><img className="icon" src="static/heal.png"/></button>
+					<button className="moves_btn use" onClick={() => { this.use() }}><img className="icon" src="static/use.png"/></button>
+				</div>
 			</div>
 		)
 	}
@@ -152,54 +205,10 @@ class UnitRender extends React.Component {
 		this.state = {
 			enemyId: 0,
 		}
-		this.hitEnemy = this.hitEnemy.bind(this);
-		this.aiming = this.aiming.bind(this);
-		this.shield = this.shield.bind(this);
-		this.healthing = this.healthing.bind(this);
-		this.use = this.use.bind(this);
-	}
-	hitEnemy() {
-		socket.emit("Attack", {
-			self: this.props.id,
-			enemy: prompt("Enemy's name:")
-		});
-	}
-	use() {
-		socket.emit("Use", {
-			self: this.props.id,
-			enemy: prompt("Enemy's name:"),
-			using: prompt("Item's name:")
-		});
-	}
-	aiming() {
-		socket.emit("Aim", {
-			self: this.props.id,
-
-		});
-	}
-	speeding() {
-		socket.emit("Speeding", {
-			self: this.props.id,
-
-		});
-
-	}
-	shield() {
-		socket.emit("Shield", {
-			self: this.props.id,
-
-		});
-
-	}
-	healthing() {
-		socket.emit("Healthing", {
-			self: this.props.id,
-
-		});
-
 	}
 	render() {
-		// генерируемый html
+		let sprite = "static/" + this.props.unit.spec + ".png";
+		
 		return (
 			<div className="unit">
 				<div className="stats">
@@ -212,16 +221,13 @@ class UnitRender extends React.Component {
 					<span className="unit_dmg">Урон: {this.props.unit._weapon.dmg + this.props.unit._atk}</span><br /> {/* подставляем параметры из получаемого пропс */}
 					<span className="unit_dmg">Меткость: {this.props.unit.aim}</span><br /> {/* подставляем параметры из получаемого пропс */}
 					<span className="unit_dmg">Инвентарь: {this.props.unit.itemn}</span><br /> {/* подставляем параметры из получаемого пропс */}
+					
+					<img src={sprite} alt="wizard" id="sprite"/>
+				
 				</div>
 
-				<div className="moves">
-					<button className="moves_btn missing" onClick={() => { this.speeding() }}>Уклонение</button>
-					<button className="moves_btn aim" onClick={() => { this.aiming() }}>Прицелиться</button>
-					<button className="moves_btn atak" onClick={() => { this.hitEnemy() }}>Атаковать</button>
-					<button className="moves_btn defend" onClick={() => { this.shield() }}> Защититься</button>
-					<button className="moves_btn heal" onClick={() => { this.healthing() }}>Полечиться</button>
-					<button className="moves_btn heal" onClick={() => { this.use() }}>Использовать</button>
-				</div>
+				
+				
 			</div>
 			// <div></div>
 		)
